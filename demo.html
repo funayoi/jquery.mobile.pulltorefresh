@@ -8,38 +8,49 @@
 	<script type="text/javascript" src="./jquery.mobile-1.0.js"></script>
 	<!-- <script type="text/javascript" src="./jquery-ui-1.8.16.custom.min.js"></script> -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/i18n/jquery-ui-i18n.min.js" type="text/javascript"></script>
-    <script>
-    $(function() {
-        $("#draggable").draggable({ 
-            axis: "y",
-            //revert: true,
-            create: function() {
-                $(this).prepend('<div class="pull-header">reloading...</div>');
-                startPosTop = $(this).parent().position().top;
-            },
-            stop: function() {
-                var top = parseInt($(this).css("top"));
-                if (top >= 80) {
-                    $(this).css("top", 80);
-                } else if (top >= 0 && top < 80) {
-                    $(this).css("top", 0);
-                }
-            }
-        });
-    });
-    </script>
-    <style>
-        .ui-header {
-            z-index: 10;
-        }
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/i18n/jquery-ui-i18n.min.js" type="text/javascript"></script>
+  <script src="jquery.mobile.pulltorefresh.js" type="text/javascript"></script>
+  <script>
+  $(function() {
+    var refreshCallback = function(loader) {
+      setTimeout(function(){
+        //loader.finish();
 
-        .pull-header {
-            height: 80px;
-            margin-top: -80px;
-            background-color: #88FFFF;
-        }
-    </style>
+      }, 1000);
+    };
+
+    var cancelRefreshing = function() {
+    };
+
+    $("#draggable").pulltorefresh({
+      async: true,
+      // event triggered when refreshing start
+      refresh: function(event, finishCallback) {
+        element = $(this)
+        setTimeout(function(){
+          alert("refresh");
+
+          // you must call this function if refreshing process runs asynchronusly
+          finishCallback();
+        }, 1000);
+      },
+      abort: function() {
+        alert("abort");
+      }
+    });
+  });
+  </script>
+  <style>
+    .ui-header {
+      z-index: 10;
+    }
+
+    .pull-header {
+      height: 80px;
+      margin-top: -80px;
+      background-color: #88FFFF;
+    }
+  </style>
 </head> 
 <body> 
 
